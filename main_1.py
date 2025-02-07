@@ -30,10 +30,10 @@ sensor = machine.ADC(adcpin)
 sock = usocket
 SSID = 'BB'
 PASSWORD = '6KH1jk1mn0s'
-# SERVER_HOSTNAME = "e5d2174059b64286bd5f243dd055355a.s1.eu.hivemq.cloud:8884/mqtt"
+
 
 USER = "Cuthbert"
-#PASSWORD = 'Cbaines123!'
+
 wlan = network.WLAN(network.STA_IF)
 TOPIC = "test_data"
 mqtt = MQTTClient
