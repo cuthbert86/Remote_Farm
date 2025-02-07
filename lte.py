@@ -1,4 +1,4 @@
-mport time
+import time
 
 from machine import UART, Pin
 import network
