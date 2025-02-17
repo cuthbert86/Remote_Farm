@@ -1,22 +1,30 @@
-import network
+import time
 import usocket
 import socket
 from time import time, sleep
 import network
 import time
+from umqtt.simple import MQTTClient
 import machine
 from picozero import pico_temp_sensor
 from machine import Pin
 import micropython
 import ustruct as struct
 import json
+import random
+import socket
+import uos
+import time
+from machine import I2C, Pin
+from collections import deque
+
 
 
 Self_Name = 'PW_1'
-SSID = 'BB'
-PASSWORD = '6KH1jk1mn0s'
-ssidRouter     = 'BB'    #Enter the router name
-passwordRouter = '6KH1jk1mn0s' #Enter the router password
+SSID = ''
+PASSWORD = ''
+ssidRouter     = ''    #Enter the router name
+passwordRouter = '' #Enter the router password
 ssidAP         = 'Pico W'      #Enter the AP name
 passwordAP     = '12345678'    #Enter the AP password
 local_IP       = '192.168.4.150'
@@ -27,10 +35,10 @@ dns            = '8.8.8.8'
 adcpin = 4
 sensor = machine.ADC(adcpin)
 sock = usocket
-Mqtt_Broker = "e5d2174059b64286bd5f243dd055355a.s1.eu.hivemq.cloud:8884/mqtt"
+Mqtt_Broker = ""
 
-USER = "Cuthbert"
-#PASSWORD = 'Cbaines123!'
+USER = ""
+#PASSWORD = ''
 wlan = network.WLAN(network.STA_IF)
 sta_if = network.WLAN(network.STA_IF)
 ap_if = network.WLAN(network.AP_IF)
@@ -73,8 +81,8 @@ def GetTemperature():
 
 
 def connect_to_wifi():
-    SSID = 'BB'
-    PASSWORD = '6KH1jk1mn0s'
+    SSID = ''
+    PASSWORD = ''
     wlan.active(True)
     wlan.connect(SSID, PASSWORD)
     print("Connecting to Wi-Fi...")
@@ -91,6 +99,7 @@ def to_json(Self_Name, Temperature):
     sensor_data = {
         "Self Name": Self_Name,
         "temperature": Temperature,
+        "Timestamp": timestamp
     }
 
     # Convert the dictionary to a JSON string
@@ -112,7 +121,7 @@ def WifiServer(ssidAP,passwordAP):
     print('Success, IP address:', ap_if.ifconfig())
     open_socket()
     print("Setup End\n")
-    
+
 
 
 def open_socket():
@@ -144,3 +153,29 @@ def AP_Setup(ssidAP,passwordAP):
     ap_if.active(True)
     print('Success, IP address:', ap_if.ifconfig())
     print("Setup End\n")
+
+
+def write_to_csv(csv_data, filename="PW_1.csv"):
+    # Write the CSV data to a file
+    with open(filename, "a") as file:
+        file.write(csv_data)
+
+
+def collect_sensor_data():
+    # Collect data from the sensor
+    Temp = GetTemperature()
+    
+    # Get the current timestamp
+    timestamp = time.time()
+    
+    # Format timestamp to YYYY-MM-DD HH:MM:SS
+    formatted_time = time.localtime(timestamp)
+    timestamp_str = "{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}".format(
+        formatted_time[0], formatted_time[1], formatted_time[2], 
+        formatted_time[3], formatted_time[4], formatted_time[5]
+    )
+
+    # Create a CSV formatted string
+    csv_data = "{},{}\n".format(timestamp_str, Temp)
+    
+    return csv_data
