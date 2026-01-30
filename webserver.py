@@ -5,8 +5,8 @@ from picozero import pico_temp_sensor, pico_led
 import machine
 from config import wifi_ssid, wifi_password, mqtt_server, mqtt_username, mqtt_password
 
-ssid = 'BB'  # wifi name
-password = '6KH1jk1mn0s'  # wifi password
+ssid = ''  # wifi name
+password = ''  # wifi password
 temperature = 0
 start_time = time()
 duration = 400
