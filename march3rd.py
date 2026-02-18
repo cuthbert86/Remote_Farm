@@ -1,7 +1,7 @@
 # This is my "main.py" micropython program, it needs to be so smooth that it will run and run for weeks at a time while the pico has power.
 # It connects to the internet, collects data and I'd like it to connect to the adafruit IOT ckoud server but there is a bug in the micropython firmware that
-won't let it connect to a public network (and I'm smart enough to fix it - yet).  So maybe mext week I'll convet this program into circuit python which should be 
-compatible.  
+# won't let it connect to a public network (and I'm smart enough to fix it - yet).  So maybe mext week I'll convet this program into circuit python which should be 
+# compatible.  
 import time
 from helper import GetTemperature, connect_to_wifi, WifiServer, to_json, collect_sensor_data, write_to_csv, calculate_mean
 import usocket
